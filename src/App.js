@@ -1,14 +1,16 @@
 import React from 'react';
-import MoneyTable from './components/money-table';
+import DateManager from './components/date-manager';
+import InOutInput from './components/in-out-input';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header>
-        <h1>Budget counter</h1>
+          Budget counter
       </header>
-      <MoneyTable />
+      <DateManager />
+      <InOutInput />
     </div>
   );
 }

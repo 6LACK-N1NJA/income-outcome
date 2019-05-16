@@ -4,17 +4,17 @@ import styled from 'styled-components';
 
 const DateButton = styled.button`
   color : white;
-  border : 3px solid palevioletred;
+  border : 2px solid palevioletred;
   border-radius : 50%;
   background-color : transparent;
-  width : 27px;
-  height : 27px;
+  width : 31px;
+  height : 31px;
   margin : 10px;
   cursor : pointer;
   text-align : center;
 `;
 
-class MoneyTable extends React.Component {
+class DateManager extends React.Component {
   handleSubtractDay = () => {
     this.setState({date : this.state.date.subtract(1, 'day')});
   }
@@ -35,7 +35,7 @@ class MoneyTable extends React.Component {
     const {date} = this.state;
 
     return(
-      <div className='MoneyTable'>
+      <div className='DateMana'>
         <DateButton onClick={this.handleAddDay}>+</DateButton>
         <span>{date.format('DD.MM.YY')}</span>
         <DateButton onClick={this.handleSubtractDay}>-</DateButton>
@@ -44,4 +44,4 @@ class MoneyTable extends React.Component {
   }
 }
 
-export default MoneyTable;
+export default DateManager;

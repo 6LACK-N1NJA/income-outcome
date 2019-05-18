@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
+import Expense from './components/expense.js';
+import Income from './components/income.js';
 
 const Nav = styled.nav`
   display: flex;
@@ -47,6 +49,7 @@ class InOutInput extends Component {
             Expense
           </Link>
         </Nav>
+        {navSelected === 'expense' ? <Income /> : <Expense />}
       </div>
     );
   }

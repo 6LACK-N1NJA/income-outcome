@@ -16,11 +16,15 @@ const DateButton = styled.button`
 
 class DateManager extends React.Component {
   handleSubtractDay = () => {
-    this.setState({date : this.state.date.subtract(1, 'day')});
+    const date = this.state.date.subtract(1, 'day');
+    this.setState({date : date});
+    this.props.dateChange(date);
   }
 
   handleAddDay = () => {
-    this.setState({date : this.state.date.add(1, 'day')});
+    const date = this.state.date.add(1, 'day');
+    this.setState({date : date});
+    this.props.dateChange(date);
   }
 
   constructor(props){
@@ -35,7 +39,7 @@ class DateManager extends React.Component {
     const {date} = this.state;
 
     return(
-      <div className='DateMana'>
+      <div className='DateManager'>
         <DateButton onClick={this.handleAddDay}>+</DateButton>
         <span>{date.format('DD.MM.YY')}</span>
         <DateButton onClick={this.handleSubtractDay}>-</DateButton>

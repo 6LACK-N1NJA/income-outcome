@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+
 const Container = styled.article`
   display: flex;
   justify-content: center;
@@ -30,6 +31,7 @@ const Input = styled.input`
 
 const LineTitle = styled.dt`
   width: 150px;
+
 `;
 
 const LineInput = styled.dd`
@@ -79,7 +81,7 @@ class Expense extends Component {
       <Container>
         <dl>
           <InputLine>
-            <LineTitle>$ $ $</LineTitle>
+            <LineTitle>Amount</LineTitle>
             <LineInput>
               <Input
                 name="transaction"

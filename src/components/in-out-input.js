@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import Expense from './expense.js';
 import Income from './income.js';
+import Table from './table.js';
+import moment from 'moment';
+import {findLastIndex} from 'lodash';
+
 
 const Nav = styled.nav`
   display: flex;
@@ -21,6 +25,7 @@ class InOutInput extends Component {
     super(props);
     this.state = {
       navSelected : 'income',
+      transactioins : [],
     }
   }
 
@@ -29,6 +34,29 @@ class InOutInput extends Component {
   }
 
   handleSubmit = (sum, cat) => {
+    const {date: TodayDate} = this.props;
+    const {transactioins} = this.state;
+    const newTransaction = {
+      date: TodayDate.format('DD.MM.YYYY'),
+      cat,
+      sum,
+    };
+    const index = findLastIndex(transactioins, ({date}) => {
+      const transaction = moment(date, 'DD.MM.YYYY');
+      return(
+        TodayDate.isBefore(transaction, 'day') ||
+        TodayDate.isSame(transaction, 'day')
+      );
+    });
+
+    const newTransactions = [...transactioins];
+    newTransactions.splice(
+      index === -1 ? transactioins.length : index,
+      0,
+      newTransaction,
+    );
+    console.log(newTransactions);
+    this.setState({transactioins: newTransactions});
   }
 
   render(){
@@ -56,7 +84,9 @@ class InOutInput extends Component {
           <Income onSubmit={this.handleSubmit} />
         ):(
           <Expense onSubmit={this.handleSubmit}/>
+
         )}
+        <Table data={this.state.transactions} />
       </div>
     );
   }

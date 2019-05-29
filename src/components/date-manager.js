@@ -40,9 +40,9 @@ class DateManager extends React.Component {
 
     return(
       <div className='DateManager'>
-        <DateButton onClick={this.handleAddDay}>+</DateButton>
-        <span>{date.format('DD.MM.YY')}</span>
         <DateButton onClick={this.handleSubtractDay}>-</DateButton>
+        <span>{date.format('DD.MM.YY')}</span>
+        <DateButton onClick={this.handleAddDay}>+</DateButton>
       </div>
     );
   }

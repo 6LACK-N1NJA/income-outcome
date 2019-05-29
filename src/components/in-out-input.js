@@ -4,7 +4,6 @@ import Expense from './expense.js';
 import Income from './income.js';
 import Table from './table.js';
 import moment from 'moment';
-import {findLastIndex} from 'lodash';
 
 
 const Nav = styled.nav`
@@ -23,6 +22,10 @@ const Link = styled.span`
 class InOutInput extends Component {
   constructor(props) {
     super(props);
+    const store = localStorage.getItem('transactions');
+    if (! store instanceof Array) {
+      localStorage.setItem('transactions', []);
+    }
     this.state = {
       navSelected : 'income',
       transactioins : [],
@@ -41,22 +44,62 @@ class InOutInput extends Component {
       cat,
       sum,
     };
-    const index = findLastIndex(transactioins, ({date}) => {
+    /*const index = findLastIndex(transactioins, ({date}) => {
       const transaction = moment(date, 'DD.MM.YYYY');
       return(
         TodayDate.isBefore(transaction, 'day') ||
         TodayDate.isSame(transaction, 'day')
       );
-    });
+    });*/
 
-    const newTransactions = [...transactioins];
-    newTransactions.splice(
+    const newTransactions = [...transactioins, newTransaction];
+    /*newTransactions.splice(
       index === -1 ? transactioins.length : index,
       0,
       newTransaction,
-    );
-    console.log(newTransactions);
+    );*/
+
+    newTransactions.sort((a,b) => {
+      const aDate = moment(a.date, 'DD.MM.YYYY');
+      const bDate = moment(b.date, 'DD.MM.YYYY');
+
+
+      return(aDate).isAfter(bDate);
+
+    })
     this.setState({transactioins: newTransactions});
+    localStorage.setItem('transactions', this.state.transactioins);
+    console.log(typeof localStorage.getItem('transactions'));
+  }
+
+  onToday = () => {
+    let sum = 0;
+    const today = moment().format('DD');
+    const dayLeft = 30 - today;
+    this.state.transactioins.forEach(transaction => {
+      sum += transaction.sum;
+    });
+    return sum / dayLeft;
+  }
+
+  totalIncome = () => {
+    let sum = 0;
+    this.state.transactioins.forEach(transaction => {
+      if (transaction.sum > 0) {
+        sum += transaction.sum;
+      }
+    });
+    return sum;
+  }
+
+  totalExpenses = () => {
+    let sum = 0;
+    this.state.transactioins.forEach(transaction => {
+      if (transaction.sum < 0) {
+        sum += transaction.sum;
+      }
+    });
+    return sum;
   }
 
   render(){
@@ -64,6 +107,7 @@ class InOutInput extends Component {
 
     return(
       <div className='InOutInput'>
+        <p>Total income: {this.totalIncome()} | Total expenses: {this.totalExpenses()} | May spend today: {this.onToday()}</p>
         <Nav>
           <Link
             name='income'
@@ -86,7 +130,7 @@ class InOutInput extends Component {
           <Expense onSubmit={this.handleSubmit}/>
 
         )}
-        <Table data={this.state.transactions} />
+        <Table data={this.state.transactioins} />
       </div>
     );
   }
